@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block content %}
+<h1>Edit User</h1>
+<form action="{{ url_for('app.edit', user_id=user.id) }}" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" value="{{ user.name }}" required>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" value="{{ user.email }}" required>
+    <label for="password">Password (leave blank to keep current):</label>
+    <input type="password" name="password" id="password">
+    <button type="submit">Save</button>
+</form>
+<a href="{{ url_for('app.show', user_id=user.id) }}">Back to User</a>
+<a href="{{ url_for('app.index') }}">Back to Users List</a>
+{% endblock %}

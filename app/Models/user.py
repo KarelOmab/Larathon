@@ -14,11 +14,9 @@ class User(db.Model):
     updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
     def set_password(self, password):
-        """Generate a hashed password and store it."""
         self.password = generate_password_hash(password)
 
     def check_password(self, password):
-        """Check a hashed password against a plain-text password."""
         return check_password_hash(self.password, password)
 
     def __repr__(self):

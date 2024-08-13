@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}User: {{ user.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ user.name }}</h1>
+<p>Email: {{ user.email }}</p>
+<a href="{{ url_for('app.edit', user_id=user.id) }}">Edit</a>
+<form action="{{ url_for('app.delete', user_id=user.id) }}" method="POST">
+    <button type="submit">Delete</button>
+</form>
+<a href="{{ url_for('app.index') }}">Back to Users List</a>
+{% endblock %}
