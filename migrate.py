@@ -2,11 +2,14 @@
 python migrate.py
 python migrate.py --down
 python migrate.py --fresh
+python migrate.py --seed
+python migrate.py --fresh --seed
 """
 import os
 import sys
 import importlib.util
 from bootstrap.app import app, db
+from database.seeders.user_seeder import UserSeeder
 
 def apply_migrations(direction='up', extend_existing=False):
     migrations_dir = os.path.join(os.getcwd(), 'database', 'migrations')
@@ -43,9 +46,14 @@ def drop_all_tables():
     db.metadata.clear()  # Clear the MetaData registry
     print("All tables dropped.")
 
+def run_seeders():
+    """Run all seeders."""
+    UserSeeder.run()
+
 if __name__ == '__main__':
     fresh = '--fresh' in sys.argv
     extend_existing = '--extend-existing' in sys.argv
+    seed = '--seed' in sys.argv
     direction = 'down' if '--down' in sys.argv else 'up'
 
     with app.app_context():  # Ensure the app context is active
@@ -53,5 +61,12 @@ if __name__ == '__main__':
             drop_all_tables()
 
         apply_migrations(direction, extend_existing=extend_existing)
+        
+        if seed:
+            run_seeders()
+        
         print(f"Migrations applied successfully in {direction} direction.")
+        if seed:
+            print("Database seeding completed.")
+
 

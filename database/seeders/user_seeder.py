@@ -1,12 +1,12 @@
 from bootstrap.app import db
-from database.factories import generate_user
+from database.factories.user_factory import UserFactory
 
-def seed_users(num_users=3):
-    db.create_all()
-    for _ in range(num_users):
-        user = generate_user()
-        db.session.add(user)
-    db.session.commit()
-
-if __name__ == '__main__':
-    seed_users(10)
+class UserSeeder:
+    @staticmethod
+    def run():
+        """Seed the database with users."""
+        users = UserFactory.create(size=10)
+        for user in users:
+            db.session.add(user)
+        db.session.commit()
+        print(f"Seeded {len(users)} users.")
